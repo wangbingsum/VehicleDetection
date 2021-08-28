@@ -2,8 +2,7 @@ import numpy as np
 import json
 import os
 import re
-from modules.model.detection_result import DetectionResult
-# from predict import model
+# from ..predict.UL.predict import model
 
 class VehilceDetection:
     def __init__(self, config:dict, model, vehicles:list):
@@ -24,8 +23,9 @@ class VehilceDetection:
         self._init_model(model_path)
         detection_results = []
         # 检测当前车型下的所有车辆图片
-        for vehicle in self.vehicles:
-            print(f'vin: {vehicle.vin}, package: {vehicle.vehicle_package}')
+        total_vehicle = len(self.vehicles)
+        for index, vehicle in enumerate(self.vehicles):
+            print(f'{index}/{total_vehicle} vin: {vehicle.vin}, package: {vehicle.vehicle_package}')
             # 轮询检测每一张图片
             rpos = self.packages[vehicle.package]
             # 获取当前配置下每个拍摄位置对应的rpo列表
@@ -64,12 +64,12 @@ class VehilceDetection:
         1. 预测少了
         2. 预测错了
         '''
-        pre = ' '.join([f'{rpo}:{self.rpo2description[rpo]}' for rpo in predict])
-        acu = ' '.join([f'{rpo}:{self.rpo2description[rpo]}' for rpo in acutal])
+        pre = ' '.join(predict)
+        acu = ' '.join(acutal)
         if len(predict) != len(acutal):
-            return f'position: {position} 预测类别个数不等于实际个数：acutal: {acu}, predict: {pre}'
+            return f'position: {position} 预测类别个数不等于实际个数：acutal: {acu} predict: {pre}'
         elif not self._check_element_equal(predict, acutal):
-            return f'position: {position} 预测类别不完全等于实际类别: acutal: {acu}, predict: {pre}'
+            return f'position: {position} 预测类别不完全等于实际类别: acutal: {acu} predict: {pre}'
         else:
             return 'OK'
             
@@ -85,9 +85,7 @@ class VehilceDetection:
         res = []
         for comp in componet:
             img_cls = result_json['result']['final'][comp]['img_cls']
-            img_score = result_json['result']['final'][comp]['img_score']
-            if len(img_score) > 0:
-                res.extend([self.class2rpo[c] for c in img_cls])
+            res.extend([self.class2rpo[c] for c in img_cls])    
         return res
     
     def get_image_json(self, image_path, component, camera_id:str, vehicle_type):

@@ -19,7 +19,7 @@ def main():
         vehicle_config_file = vehicle_config[model]
         for cfg in vehicle_config_file:
             with open(os.path.join('config', cfg), 'rb') as f:
-                vehicle_config = json.load(vehicle_config)
+                vehicle_config = json.load(f)
             detector = VehilceDetection(vehicle_config, model, data[model])
             result = detector.run()
             save_detection_result(model, result)
@@ -41,6 +41,8 @@ def save_detection_result(model, result):
 
 
 if __name__ == '__main__':
-   main()
-
+    # main()
+    with open('./config/UL15.json', 'rb') as f:
+        config = json.load(f)
+    print(config)
     
