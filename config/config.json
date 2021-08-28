@@ -1,0 +1,17 @@
+{
+    "image_path": "D:\\Image",
+    "active_model": ["358"],
+    "image_number":{
+        "358": [15]
+    },
+    "map":{
+        "KR": "O1",
+        "ZK": "E2UL",
+        "NB": "C1UL",
+        "UL": "358",
+        "NL": "C1TL"
+    },
+    "vehicle_config":{
+        "358": ["UL15.json"]
+    }
+}
