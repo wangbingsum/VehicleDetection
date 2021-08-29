@@ -215,6 +215,10 @@
         "E58": "双侧电动滑门+滑门有电动门标签"
     },
     "config":{
-        "model_path":"D:\\model\\GL8_358\\0827\\0827\\AOI_model\\model"
+        "model_path":{
+            "0811":"D:\\model\\GL8_358\\0827\\0827\\AOI_model\\model",
+            "0827":"D:\\model\\GL8_358\\0827\\0827\\AOI_model\\model"
+        },
+        "high": ["32", "33", "42", "B5", "B7"]
     }
 }

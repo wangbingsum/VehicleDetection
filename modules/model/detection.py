@@ -1,10 +1,19 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+'''
+@Description:       :
+@Date     :2021/08/29 22:32:30
+@Author      :wangbing
+@version      :1.0
+'''
 import numpy as np
 import json
 import os
 import re
+import time
 # from ..predict.UL.predict import model
 
-class VehilceDetection:
+class VehilceDetector:
     def __init__(self, config:dict, model, vehicles:list):
         super().__init__()
         self.map = config['rpo_map'] # rpo到拍摄位置的映射
@@ -18,14 +27,22 @@ class VehilceDetection:
 
     def run(self):
         print(f'当前检测车型：{self.model}')
-        print("模型初始化")
-        model_path = self.config['model_path']
+        print("深度学习模型初始化中...")
+        # 兼容不同模型版本
+        model_path = self.config['model_path']['0827']
         self._init_model(model_path)
+
         detection_results = []
         # 检测当前车型下的所有车辆图片
         total_vehicle = len(self.vehicles)
+        running_time = 0
         for index, vehicle in enumerate(self.vehicles):
-            print(f'{index}/{total_vehicle} vin: {vehicle.vin}, package: {vehicle.vehicle_package}')
+            remain_time = running_time * (total_vehicle - index)
+            print(f'{index + 1}/{total_vehicle} vin: {vehicle.vin}, package: {vehicle.vehicle_package} remain time: {remain_time}')
+            
+            # 获取检测流程启动时间 
+            begin_time = time()
+            
             # 轮询检测每一张图片
             rpos = self.packages[vehicle.package]
             # 获取当前配置下每个拍摄位置对应的rpo列表
@@ -56,32 +73,34 @@ class VehilceDetection:
             else:
                 result.insert(2, 'OK')
             detection_results.append(result)
+
+            # 获取程序运行结束时间
+            end_time = time()
+
+            running_time = abs(end_time - begin_time)
         return detection_results
 
     def compare(self, position, acutal:list, predict:list):
-        '''
-        比对预测类别和实际类别，得到预测结果
-        1. 预测少了
-        2. 预测错了
-        '''
+        '''比对预测类别和实际类别，得到预测结果
+            1. 预测数量不相等
+            2. 预测类别不相等'''
         pre = ' '.join(predict)
         acu = ' '.join(acutal)
         if len(predict) != len(acutal):
-            return f'position: {position} 预测类别个数不等于实际个数：acutal: {acu} predict: {pre}'
+            return f'position: {position} Unequal quantity：actual: {acu} predict: {pre}'
         elif not self._check_element_equal(predict, acutal):
-            return f'position: {position} 预测类别不完全等于实际类别: acutal: {acu} predict: {pre}'
+            return f'position: {position} Class inequality: actual: {acu} predict: {pre}'
         else:
             return 'OK'
             
     def _check_element_equal(self, predict, actual):
+        "对预测类别和实际类别进行相等性判断"
         for pre in predict:
             if pre not in actual: return False
         return True
 
     def decode(self, componet, result_json): 
-        '''
-        返回当前拍摄位置，预测到的所有类别信息
-        '''
+        "返回当前拍摄位置，预测到的所有类别信息"
         res = []
         for comp in componet:
             img_cls = result_json['result']['final'][comp]['img_cls']
@@ -89,6 +108,7 @@ class VehilceDetection:
         return res
     
     def get_image_json(self, image_path, component, camera_id:str, vehicle_type):
+        "获取模型调用json文件"
         return {
             "image": {
                 "path":image_path
@@ -131,9 +151,7 @@ class VehilceDetection:
                     assert file in os.listdir(model_path), '{} not in package {}'.format(file, model_path)
     
     def get_detial_config(self, rpo_lst:list):
-        '''
-        生成详细配置文件
-        '''
+        "生成详细配置文件"
         map = {}
         for rpo in rpo_lst:
             map[rpo] = self.map[rpo]
