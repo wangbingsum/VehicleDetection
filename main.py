@@ -24,14 +24,22 @@ def main():
     data = get_vehicle_data(root_path, active_model, image_number)
     for model in active_model:
         vehicle_config_file = vehicle_config[model]
-        for cfg in vehicle_config_file:
+        vehicle_data = split_vehicle_data(data[model])
+        for key, cfg in vehicle_config_file.items():
             with open(os.path.join('config', cfg), 'rb') as f:
-                vehicle_config = json.load(f)
-            detector = VehilceDetector(vehicle_config, model, data[model])
+                vehicle_cfg = json.load(f)
+            detector = VehilceDetector(vehicle_cfg, model, vehicle_data[int(key)])
             result = detector.run()
-
             # 对检测结果进行处理
-            process_detection_result(model, result, vehicle_config['config'])
+            process_detection_result(model, result, vehicle_cfg['config'])
+
+def split_vehicle_data(data, image_number):
+    res = {}
+    for num in image_number:
+        res[num] = []
+    for vehicle in data:
+        res[len(vehicle)].append(vehicle)
+    return res
 
 def process_detection_result(model, result, config):
     root_path = 'output'
@@ -43,7 +51,8 @@ def process_detection_result(model, result, config):
         os.makedirs(path)
 
     # 保存检测结果
-    file_name = os.path.join(path, 'DetectionResults.csv')
+    image_number = config["image_number"]
+    file_name = os.path.join(path, f'DetectionResults_{image_number}.csv')
     vehicle_high_name = os.path.join(path, 'DetectionResults_high.csv')
     vehicle_low_name = os.path.join(path, 'DetectionResults_low.csv')
     vehicle_high, vehicle_low = split_vehicle_detection_result(result, config)
@@ -54,8 +63,6 @@ def process_detection_result(model, result, config):
     print(f'model: {model}, 检测结果写入成功, path: {full_path}, \
         vehicle high: {os.path.join(DIRNAME, vehicle_high_name)} \
         vehicle low: {os.path.join(DIRNAME, vehicle_low_name)}')
-
-
 
 def split_vehicle_detection_result(detection_result, config):
     high = config['high'] # 32/33/42/45/B5/B7

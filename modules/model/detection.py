@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 '''
-@Description:       :
-@Date     :2021/08/29 22:32:30
-@Author      :wangbing
-@version      :1.0
+@Description:检测器
+@Date       :2021/08/30 08:50:43
+@Author     :wangbing
+@version    :1.0
 '''
+
 import numpy as np
 import json
 import os
@@ -29,7 +30,7 @@ class VehilceDetector:
         print(f'当前检测车型：{self.model}')
         print("深度学习模型初始化中...")
         # 兼容不同模型版本
-        model_path = self.config['model_path']['0827']
+        model_path = self.config['model_path']['latest']
         self._init_model(model_path)
 
         detection_results = []

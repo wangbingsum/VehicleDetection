@@ -12,6 +12,9 @@
         "NL": "C1TL"
     },
     "vehicle_config":{
-        "358": ["UL15.json"]
+        "358": {
+            "15": "UL15.json",
+            "16": "UL16.json"
+        }
     }
 }

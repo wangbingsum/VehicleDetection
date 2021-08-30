@@ -43,11 +43,11 @@ def _get_vehicle_images(root_path, image_number):
                     res.append(vehicle)
     return res          
 
-def _get_full_image_path(root_path, iamges):
+def _get_full_image_path(root_path, images):
     '''
     获取完整图片路径列表
     '''
-    return [os.path.join(root_path, iamge) for iamge in iamges]     
+    return [os.path.join(root_path, image) for image in images]     
 
 def _check_file_suffix(filename, suffix):
     '''
