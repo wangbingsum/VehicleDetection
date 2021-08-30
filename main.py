@@ -53,8 +53,8 @@ def process_detection_result(model, result, config):
     # 保存检测结果
     image_number = config["image_number"]
     file_name = os.path.join(path, f'DetectionResults_{image_number}.csv')
-    vehicle_high_name = os.path.join(path, 'DetectionResults_high.csv')
-    vehicle_low_name = os.path.join(path, 'DetectionResults_low.csv')
+    vehicle_high_name = os.path.join(path, 'DetectionResults_{image_number}_high.csv')
+    vehicle_low_name = os.path.join(path, 'DetectionResults_{image_number}_low.csv')
     vehicle_high, vehicle_low = split_vehicle_detection_result(result, config)
     save_csv(file_name, result)
     save_csv(vehicle_high_name, vehicle_high)
