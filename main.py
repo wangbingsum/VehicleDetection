@@ -3,7 +3,7 @@ import os
 import sys
 from datetime import datetime
 import pandas as pd
-from modules.model.detection import VehilceDetector
+from modules.model.detection import VehicleDetector
 from modules.utility.file_process import get_vehicle_data
 
 DIRNAME = ''
@@ -24,14 +24,14 @@ def main():
     data = get_vehicle_data(root_path, active_model, image_number)
     for model in active_model:
         vehicle_config_file = vehicle_config[model]
-        vehicle_data = split_vehicle_data(data[model])
+        vehicle_data = split_vehicle_data(data[model], image_number[model])
         for key, cfg in vehicle_config_file.items():
             with open(os.path.join('config', cfg), 'rb') as f:
                 vehicle_cfg = json.load(f)
-            detector = VehilceDetector(vehicle_cfg, model, vehicle_data[int(key)])
+            detector = VehicleDetector(vehicle_cfg, model, vehicle_data[int(key)])
             result = detector.run()
             # 对检测结果进行处理
-            process_detection_result(model, result, vehicle_cfg['config'])
+            process_detection_result(model, result, vehicle_cfg['config']) 
 
 def split_vehicle_data(data, image_number):
     res = {}
@@ -39,6 +39,7 @@ def split_vehicle_data(data, image_number):
         res[num] = []
     for vehicle in data:
         res[len(vehicle)].append(vehicle)
+            
     return res
 
 def process_detection_result(model, result, config):
@@ -53,8 +54,8 @@ def process_detection_result(model, result, config):
     # 保存检测结果
     image_number = config["image_number"]
     file_name = os.path.join(path, f'DetectionResults_{image_number}.csv')
-    vehicle_high_name = os.path.join(path, 'DetectionResults_{image_number}_high.csv')
-    vehicle_low_name = os.path.join(path, 'DetectionResults_{image_number}_low.csv')
+    vehicle_high_name = os.path.join(path, f'DetectionResults_{image_number}_high.csv')
+    vehicle_low_name = os.path.join(path, f'DetectionResults_{image_number}_low.csv')
     vehicle_high, vehicle_low = split_vehicle_detection_result(result, config)
     save_csv(file_name, result)
     save_csv(vehicle_high_name, vehicle_high)
