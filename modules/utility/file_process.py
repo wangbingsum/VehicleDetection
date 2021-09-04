@@ -15,11 +15,11 @@ def get_vehicle_data(root_path, models, image_number:dict):
             path = os.path.join(root_path, date, model)
             if os.path.exists(path):
                 number = image_number[model]
-                image_path = _get_vehicle_images(path, number)
+                image_path = get_vehicle_images(path, number)
                 vehicles[model].extend(image_path)
     return vehicles
 
-def _get_vehicle_images(root_path, image_number):
+def get_vehicle_images(root_path, image_number):
     '''
     完整路径形如：D:\Image\20210827\358\Vin\Package\...
     root_path形如: D:\Image\20210827\358

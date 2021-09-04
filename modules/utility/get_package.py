@@ -24,21 +24,21 @@ def get_detial_config(rpo_lst:list, image_number, rpo_map:dict):
                     
         return pos
 
-if __name__ == '__main__':
-    with open('config/NB.json', 'rb') as f:
+def generate_and_save_config(config_path, target_path):
+    with open(config_path, 'rb') as f:
         config = json.load(f)
     map = config['rpo_map']
-    filename = 'output/result.txt'
+    image_number = config['config']['image_number']
     packages = config['packages']
-    with open(filename, 'w+') as f:
+    with open(target_path, 'w+') as f:
         for key, values in packages.items():
             f.write(f'[{key}]\r')
             rpos = ','.join(values)
             f.write(f'RPO={rpos}\r')
             f.write('Folder=\r')
-            pos = get_detial_config(packages['6NB268T01'], 14, map)
+            pos = get_detial_config(values, image_number, map)
             for key, value in pos.items():
                 rpo = ','.join(value)
                 f.write(f'{key}={rpo}\r')
             f.write('\r\n')
-     
+    print("配置文件生成完成") 
