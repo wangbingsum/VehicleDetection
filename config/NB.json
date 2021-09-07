@@ -203,7 +203,7 @@
     "config":{
         "image_number": 14,
         "model_path":{
-            "latest":"D:\\model\\GL8_358\\0827\\0827\\AOI_model\\model"
+            "latest":"D:\\model\\AOI_model_xt5\\model"
         },
         "high": ["15", "18"]
     }

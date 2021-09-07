@@ -39,8 +39,8 @@ class VehicleDetector:
         running_time = 0
         for index, vehicle in enumerate(self.vehicles):
             try:
-                remain_time = running_time * (total_vehicle - index)
-                print(f'{index + 1}/{total_vehicle} vin: {vehicle.vin}, package: {vehicle.vehicle_package} remain time: {remain_time:.02}s')
+                remain_time = float(running_time * (total_vehicle - index))
+                print(f'{index + 1}/{total_vehicle} vin: {vehicle.vin}, package: {vehicle.vehicle_package} remain time: {remain_time:.02f}s')
             
                 # 获取检测流程启动时间 
                 begin_time = time()

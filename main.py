@@ -86,5 +86,5 @@ def save_csv(file_name, data):
 
 if __name__ == '__main__':
     DIRNAME, _ = os.path.split(os.path.abspath(sys.argv[0]))
-    # main()
+    main()
     
