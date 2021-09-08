@@ -66,9 +66,10 @@ class VehicleDetector:
                     # 对比配置文件和预测信息，获取检测结果
                     res = self.compare(i, pos_config[i], predict_cls)
                     if res != 'OK':
-                        result.extend(['NG', res])
+                        # 添加保存调用图像图像地址
+                        result.extend(['NG', res, image_path])
                     else:
-                        result.extend(['OK', ' '])
+                        result.extend(['OK', ' ', ' '])
                 # 插入一辆车总的检测结果
                 if 'NG' in result:
                     result.insert(2, 'NG')
