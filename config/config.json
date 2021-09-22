@@ -1,9 +1,11 @@
 {
     "image_path": "D:\\Image",
-    "active_model": ["358", "C1UL"],
+    "active_model": ["358", "C1UL","E2UL"],
     "image_number":{
         "358": [15, 16],
-        "C1UL": [14]
+        "C1UL": [14],
+        "E2UL": [14],
+        "C1TL": [14]
     },
     "map":{
         "KR": "O1",
@@ -18,7 +20,13 @@
             "16": "UL16.json"
         },
         "C1UL": {
-            "14": "NB.json"
+            "14": "NB15.json"
+        },
+        "E2UL":{
+            "14": "ZK14.json"
+        },
+        "C1TL":{
+            "14": "NL14.json"
         }
     }
 }

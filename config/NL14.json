@@ -1,0 +1,151 @@
+{
+    "rpo_map":{
+        
+    },
+    "packages":{
+        
+    },
+    "componets":{
+        "1":[],
+        "2":[],
+        "3":[],
+        "4":[],
+        "5":[],
+        "6":[],
+        "7":[],
+        "8":[],
+        "9":[],
+        "10":[],
+        "11":[],
+        "12":[],
+        "13":[],
+        "14":[]
+    },
+    "class_to_rpo":{
+        "bright_grille":"#01",
+        "chrome_grill_panel":"#03",
+        "grid_grille":"#02",
+        "black_grill_panel":"#04",
+
+        "1_bulb_lamp":"#07",
+        "lamp_chrome_panel":"#05",
+        "horizon_side_grill":"#01",
+        "3_bulb_lamp":"#08",
+        "lamp_black_panel":"#06",
+        "grid_side_grille":"#02",
+
+        "samecolor_license_plate":"#03",
+        "horizon_lower_grill":"#01",
+        "black_license_plate":"#04",
+        "grid_lower_grille":"#02",
+        "LRR":"UGN",
+        "NV":"UV3",
+
+        "sporty_rear_molding":"#16",
+
+        "logo_camara":"UV2",
+
+        "12_alloy_tire":"Q6X",
+        "12_fork_tire":"Q6R",
+        "12_sporty_tire":"Q6N",
+        "12_parallel_tire":"Q71",
+
+        "chrome_dh":"#09",
+        "lighting_dh":"HD7",
+        "sameColor_dh":"D75",
+
+        "red_tail_light":"#13",
+        "white_tail_light":"#14",
+
+        "dick_one_camera":"UVB",
+        "deflector_camera":"DRZ",
+
+        "AWD_logo":"F48",
+        "28t_logo":"MAB",
+        "XT6_logo":"CZ2",
+        "sgm_logo":"NF5",
+
+        "front_no_radars":"UD7",
+        "front_4_radars":"UD5",
+        "front_6_radars":"UKG",
+
+        "small_hud":"#39",
+        "big_hud":"UV6",
+
+        "small_sensor":"#45",
+        "big_sensor":"CE1",
+
+        "bright_roof_rail":"V8P",
+        "black_roof_rail":"V59",
+
+        "bright_win_molding":"#11",
+        "black_win_molding":"#12"
+    },
+    "rpo_to_description": {
+        "#01":"标准格栅",
+        "#03":"镀铬上饰条",
+        "#02":"网格格栅",
+        "#04":"黑色上饰条",
+
+        "#07":"1个灯泡大灯",
+        "#05":"大灯下端镀铬饰条",
+        "#01":"横饰条侧格栅",
+        "#08":"3个灯泡大灯",
+        "#06":"大灯下端黑色饰条",
+        "#02":"网格侧格栅",
+
+        "#03":"车身同色牌照饰板",
+        "#01":"前保下端横饰条格栅",
+        "#04":"黑色牌照饰板",
+        "#02":"前保下端网格格栅",
+        "UGN":"前保下端黑色中间饰盖",
+        "UV3":"前保下端左侧夜视",
+
+        "#16":"后保险杠sport饰版",
+
+        "UV2":"有前保摄像头",
+
+        "Q6X":"12幅轮毂配银色饰盖",
+        "Q6R":"12幅宽窄轮毂配银色饰盖",
+        "Q6N":"12幅黑白SPORTY轮毂配黑色饰盖",
+        "Q71":"12幅平行横幅轮毂配银色饰盖",
+
+        "#09":"镀铬饰条门把手",
+        "HD7":"带照明门把手",
+        "D75":"同色门把手",
+
+        "#13":"红色尾灯",
+        "#14":"白色尾灯",
+
+        "UVB":"后盖单摄像头",
+        "DRZ":"后导流板下方摄像头",
+
+        "F48":"AWD",
+        "MAB":"28T",
+        "CZ2":"后盖XT6标牌",
+        "NF5":"上汽通用标牌",
+
+        "UD7":"前保无雷达",
+        "UD5":"前保4雷达",
+        "UKG":"前保6雷达",
+
+        "#39":"小HUD",
+        "UV6":"大HUD",
+
+        "#45":"普通内后视镜",
+        "CE1":"防眩目内后视镜",
+
+        "V8P":"光亮行李架",
+        "V59":"亮黑色行李架",
+
+        "#11":"门窗光亮上下饰条（含三角窗）",
+        "#12":"门窗亮黑上下饰条（含三角窗）"
+    },
+    "config":{
+        "image_number": 14,
+        "model_path":{
+            "latest":""
+        },
+        "high": []
+    }
+}

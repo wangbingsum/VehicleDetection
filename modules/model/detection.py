@@ -134,6 +134,8 @@ class VehicleDetector:
             from ..predict.UL.predict import model
         elif self.model == "C1UL":
             from ..predict.NB.predict import model
+        elif self.model == "E2UL":
+            from ..predict.ZK.predict import model
         else:
             pass
         self.predictor = model(path)
