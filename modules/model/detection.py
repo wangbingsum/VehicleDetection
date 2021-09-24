@@ -54,11 +54,10 @@ class VehicleDetector:
                 result.append(vehicle.vehicle_package)
                 for i in range(1, len(vehicle) + 1):
                     result.append(f'PIC{i}')
-                    camera_id = min(i, 6)
                     image_path = vehicle[i]
                     componet = self.componets[str(i)]
                     # 构造调用json文件
-                    image_json = self.get_image_json(image_path, componet, camera_id, self.model)
+                    image_json = self.get_image_json(image_path, componet, i, self.model)
                     # 调用模型
                     result_json = self.predict(image_json)
                     # 解码得到当前拍摄位置的预测类别信息
