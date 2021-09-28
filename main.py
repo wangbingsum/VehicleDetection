@@ -1,10 +1,11 @@
 import json
 import os
 import sys
+import re
 from datetime import datetime
 import pandas as pd
 from modules.model.detection import VehicleDetector
-from modules.utility.file_process import get_vehicle_data
+from modules.utility.file_process import get_vehicle_data, get_header
 
 DIRNAME = ''
 
@@ -83,6 +84,59 @@ def save_csv(file_name, data):
             write_data = ','.join(vehicle)
             writer.write(write_data)
             writer.write('\n')
+
+def get_packages(model_file):
+    model_config_path = os.path.join("config",model_file)
+    with open(model_config_path, "rb") as f:
+        model_config = json.load(f)
+    packages = model_config["packages"].keys()
+    return packages
+
+def generate_vehicle_information():
+    # 读取配置文件
+    print('加载配置文件')
+    with open('./config/config.json', 'rb') as f:
+        config = json.load(f)
+    root_path = config['image_path']
+    active_model = ["358", "C1UL","E2UL","C1TL"]
+    image_number = config['image_number']
+    vehicle_config = {
+        "358": "UL17.json",
+        "C1UL":"NB15.json",
+        "E2UL": "ZK15.json",
+        "C1TL": "NL14.json"
+    }
+
+    data = get_vehicle_data(root_path, active_model, image_number)
+    header = get_header(root_path)
+    result = {}
+    for model in active_model:
+        result[model] = {}
+        model_data = data[model]
+        # 初始化配置层级
+        packages = get_packages(vehicle_config[model])
+        # 初始化时间层级
+        for package in packages:
+            for date in header:
+                result[model][package][date] = 0
+        for vehicle in model_data:
+            date = re.findall(r'[0-9]{8}', vehicle.images[0])[0]
+            package = vehicle.vehicle_package
+            result[model][package][date] += 1
+    
+    for model in active_model:
+        detial_info = result[model]
+        target_path = os.path.join('output', 'detial_info', model + '.csv')
+        with open(target_path, 'wb') as f:
+            f.write(','.join(['package'] + header))
+            for package in detial_info.keys():
+                output = [package]
+                for date in header:
+                    num = result[model][package][date]
+                    output.append(num)
+                f.write(','.join(output))
+
+
 
 if __name__ == '__main__':
     DIRNAME, _ = os.path.split(os.path.abspath(sys.argv[0]))

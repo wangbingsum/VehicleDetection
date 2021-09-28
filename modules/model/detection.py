@@ -83,7 +83,6 @@ class VehicleDetector:
             except Exception as e:
                 print(f'error message: {e}')
         return detection_results
-
     def compare(self, position, acutal:list, predict:list):
         '''比对预测类别和实际类别，得到预测结果
             1. 预测数量不相等
@@ -108,7 +107,7 @@ class VehicleDetector:
         res = []
         for comp in componet:
             img_cls = result_json['result']['final'][comp]['img_cls']
-            res.extend([self.class2rpo[c] for c in img_cls])    
+            res.extend([self.class2rpo[c] for c in img_cls if c != None])    
         return res
     
     def get_image_json(self, image_path, component, camera_id:str, vehicle_type):
@@ -135,6 +134,8 @@ class VehicleDetector:
             from ..predict.NB.predict import model
         elif self.model == "E2UL":
             from ..predict.ZK.predict import model
+        elif self.model == "C1TL":
+            from ..predict.NL.predict import model
         else:
             pass
         self.predictor = model(path)

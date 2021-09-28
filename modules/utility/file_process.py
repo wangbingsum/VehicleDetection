@@ -19,6 +19,10 @@ def get_vehicle_data(root_path, models, image_number:dict):
                 vehicles[model].extend(image_path)
     return vehicles
 
+def get_header(root_path):
+    dates = [date for date in os.listdir(root_path) if _check_date_formate(date)]
+    return dates
+
 def get_vehicle_images(root_path, image_number):
     '''
     完整路径形如：D:\Image\20210827\358\Vin\Package\...

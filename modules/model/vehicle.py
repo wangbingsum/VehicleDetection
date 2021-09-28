@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 '''
 @Description:存储车辆图片的数据结构
@@ -36,3 +35,6 @@ if __name__ == '__main__':
 
     package = '4UM167G27OS1'
     print(package[:9])
+
+    date = re.findall(r'[0-9]{8}', image)[0]
+    print(date)

@@ -1,6 +1,6 @@
 {
     "image_path": "D:\\Image",
-    "active_model": ["358", "C1UL","E2UL","NL"],
+    "active_model": ["358", "C1UL","E2UL","C1TL"],
     "image_number":{
         "358":  [15, 16, 17],
         "C1UL": [14, 15],
