@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 '''
 @Description:存储车辆图片的数据结构
 @Date       :2021/08/30 08:49:46

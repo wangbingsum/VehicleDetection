@@ -1,0 +1,41 @@
+{
+    "image_path": "D:\\Image",
+    "active_model": ["358", "C1UL", "E2UL", "C1TL", "O1"],
+    "image_number":{
+        "358":  [16],
+        "C1UL": [15],
+        "E2UL": [15],
+        "C1TL": [16],
+		"O1":   [14]
+    },
+    "map":{
+        "KR": "O1",
+        "ZK": "E2UL",
+        "NB": "C1UL",
+        "UL": "358",
+        "NL": "C1TL",
+
+        "358": "UL",
+        "C1UL": "NB",
+        "E2UL": "ZK",
+        "C1TL": "NL",
+        "O1": "KR"
+    },
+    "vehicle_config":{
+        "358":  {
+            "16": "UL.json"
+        },
+        "C1UL": {
+            "15": "NB.json"
+        },
+        "E2UL": {
+            "15": "ZK.json"
+        },
+        "C1TL": {
+            "16": "NL.json"
+        },
+        "O1": {
+            "14": "KR.json"
+        }
+    }
+}

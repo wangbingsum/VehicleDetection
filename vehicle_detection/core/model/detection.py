@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
 '''
 @Description:检测器
 @Date       :2021/08/30 08:50:43
@@ -7,14 +5,11 @@
 @version    :1.0
 '''
 
-import numpy as np
-import json
 import os
-import re
 from time import time
 
 class VehicleDetector:
-    def __init__(self, config:dict, model, vehicles:list):
+    def __init__(self, config:dict, model_name:str, vehicles:list):
         super().__init__()
         self.map = config['rpo_map'] # rpo到拍摄位置的映射
         self.packages = config['packages'] # 车型配置
@@ -23,15 +18,18 @@ class VehicleDetector:
         self.componets = config['componets']
         self.config = config['config']
         self.image_number = self.config['image_number']
-        self.model = model # 当前检测的模型
+        self.model_name = model_name # 当前检测的模型
         self.vehicles = vehicles # 检测车辆信息列表
 
     def run(self):
-        print(f'当前检测车型：{self.model}')
+        print(f'当前检测车型：{self.model_name}')
         print("深度学习模型初始化中...")
         # 兼容不同模型版本
         model_path = self.config['model_path']['latest']
-        self._init_model(model_path)
+        res = self._init_model(model_path)
+        if res == False: 
+            print("模型初始化异常")
+            return
 
         detection_results = []
         # 检测当前车型下的所有车辆图片
@@ -57,7 +55,7 @@ class VehicleDetector:
                     image_path = vehicle[i]
                     componet = self.componets[str(i)]
                     # 构造调用json文件
-                    image_json = self.get_image_json(image_path, componet, i, self.model)
+                    image_json = self.get_image_json(image_path, componet, i, self.model_name)
                     # 调用模型
                     result_json = self.predict(image_json)
                     # 解码得到当前拍摄位置的预测类别信息
@@ -83,6 +81,7 @@ class VehicleDetector:
             except Exception as e:
                 print(f'error message: {e}')
         return detection_results
+    
     def compare(self, position, acutal:list, predict:list):
         '''比对预测类别和实际类别，得到预测结果
             1. 预测数量不相等
@@ -90,7 +89,7 @@ class VehicleDetector:
         pre = ' '.join(predict)
         acu = ' '.join(acutal)
         if len(predict) != len(acutal):
-            return f'position: {position} Unequal quantity：actual: {acu} predict: {pre}'
+            return f'position: {position} Unequal quantity: actual: {acu} predict: {pre}'
         elif not self._check_element_equal(predict, acutal):
             return f'position: {position} Class inequality: actual: {acu} predict: {pre}'
         else:
@@ -128,19 +127,24 @@ class VehicleDetector:
 
     def _init_model(self, path):
         self._check_files(path)
-        if self.model == "358":
+        if self.model_name == "358":
             from ..predict.UL.predict import model
-        elif self.model == "C1UL":
+        elif self.model_name == "C1UL":
             from ..predict.NB.predict import model
-        elif self.model == "E2UL":
+        elif self.model_name == "E2UL":
             from ..predict.ZK.predict import model
-        elif self.model == "C1TL":
+        elif self.model_name == "C1TL":
             from ..predict.NL.predict import model
+        elif self.model_name == "O1":
+            from ..predict.KR.predict import model
         else:
-            pass
+            #self.predictor = None
+            return False
+        
         self.predictor = model(path)
         #self.predictor = None
         self.predictor.init_model()
+        return True
 
     def predict(self, img_json):
         result_json = self.predictor.infer(img_json)
