@@ -6,6 +6,7 @@
 '''
 
 import os
+import tqdm
 from time import time
 
 class VehicleDetector:
@@ -21,28 +22,22 @@ class VehicleDetector:
         self.model_name = model_name # 当前检测的模型
         self.vehicles = vehicles # 检测车辆信息列表
 
-    def run(self):
+    def run(self, model=None):
         print(f'当前检测车型：{self.model_name}')
-        print("深度学习模型初始化中...")
-        # 兼容不同模型版本
-        model_path = self.config['model_path']['latest']
-        res = self._init_model(model_path)
-        if res == False: 
-            print("模型初始化异常")
-            return
+        if model is None:
+            print("深度学习模型初始化中...")
+            # 兼容不同模型版本
+            model_path = self.config['model_path']['latest']
+            res = self._init_model(model_path)
+            if res == False: 
+                print("模型初始化异常")
+                return
+        else:
+            self.predictor = model
 
         detection_results = []
-        # 检测当前车型下的所有车辆图片
-        total_vehicle = len(self.vehicles)
-        running_time = 0
-        for index, vehicle in enumerate(self.vehicles):
+        for vehicle in tqdm(self.vehicles):
             try:
-                remain_time = float(running_time * (total_vehicle - index))
-                print(f'{index + 1}/{total_vehicle} vin: {vehicle.vin}, package: {vehicle.vehicle_package} remain time: {remain_time:.02f}s')
-            
-                # 获取检测流程启动时间 
-                begin_time = time()
-            
                 # 轮询检测每一张图片
                 rpos = self.packages[vehicle.package]
                 # 获取当前配置下每个拍摄位置对应的rpo列表
@@ -73,11 +68,6 @@ class VehicleDetector:
                 else:
                     result.insert(2, 'OK')
                 detection_results.append(result)
-
-                # 获取程序运行结束时间
-                end_time = time()
-
-                running_time = abs(end_time - begin_time)
             except Exception as e:
                 print(f'error message: {e}')
         return detection_results
@@ -128,15 +118,15 @@ class VehicleDetector:
     def _init_model(self, path):
         self._check_files(path)
         if self.model_name == "358":
-            from ..predict.UL.predict import model
+            from ..models.UL.predict import model
         elif self.model_name == "C1UL":
-            from ..predict.NB.predict import model
+            from ..models.NB.predict import model
         elif self.model_name == "E2UL":
-            from ..predict.ZK.predict import model
+            from ..models.ZK.predict import model
         elif self.model_name == "C1TL":
-            from ..predict.NL.predict import model
+            from ..models.NL.predict import model
         elif self.model_name == "O1":
-            from ..predict.KR.predict import model
+            from ..models.KR.predict import model
         else:
             #self.predictor = None
             return False

@@ -8,8 +8,11 @@
 import json
 import os
 from datetime import datetime
-from ..core.model import VehicleDetector
+from ..core.predict import VehicleDetector
 from ..core.utility import get_vehicle_data, split_vehicle_data
+
+
+__all__ = ["model_test"]
 
 
 def model_test(cfg_dir:str, output_dir:str):

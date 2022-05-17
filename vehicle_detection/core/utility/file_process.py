@@ -7,7 +7,7 @@
 '''
 import os
 import re
-from ..model.vehicle import Vehicle
+from ..predict.vehicle import Vehicle
 
 def split_vehicle_data(data:dict, image_number:list) ->dict:
     """ 对给定模型的检测图片进行拆分"""
