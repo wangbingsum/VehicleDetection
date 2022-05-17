@@ -7,7 +7,6 @@
 
 import os
 import tqdm
-from time import time
 
 class VehicleDetector:
     def __init__(self, config:dict, model_name:str, vehicles:list):
@@ -46,7 +45,7 @@ class VehicleDetector:
                 result.append(vehicle.vin)
                 result.append(vehicle.vehicle_package)
                 for i in range(1, len(vehicle) + 1):
-                    result.append(f'PIC{i}')
+                    result.append(f"PIC{i}")
                     image_path = vehicle[i]
                     componet = self.componets[str(i)]
                     # 构造调用json文件
@@ -72,10 +71,23 @@ class VehicleDetector:
                 print(f'error message: {e}')
         return detection_results
     
-    def compare(self, position, acutal:list, predict:list):
+    def compare(self, position, acutal:list, predict:list, rpo_lst:list, package:str):
         '''比对预测类别和实际类别，得到预测结果
             1. 预测数量不相等
             2. 预测类别不相等'''
+        
+        if self.model_name == "C1TL":
+            if position in [11, 14]:
+                # 单独处理pacakge中包含V39和V40的车型
+                if "V39" in package or "V40" in package:
+                    predict = [rpo for rpo in predict if rpo != "UD5"]
+                    acutal = [rpo for rpo in acutal if rpo != "UD5"]
+                # 单独处理RPO中包含UKG的车型
+                if "UKG" in rpo_lst:
+                    if "UD5" in predict and "UD5" in acutal:
+                        # TODO: 对高配车型的11和14点位进行处理
+                        pass
+        
         pre = ' '.join(predict)
         acu = ' '.join(acutal)
         if len(predict) != len(acutal):
