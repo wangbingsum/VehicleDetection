@@ -6,7 +6,7 @@
 @version    :1.0
 '''
 
-import tqdm
+from tqdm import tqdm
 
 
 __all__ = ["analyse_result"]

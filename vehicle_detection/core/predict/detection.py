@@ -6,11 +6,14 @@
 '''
 
 import os
-import tqdm
+from tqdm import tqdm
+import json
 
 class VehicleDetector:
-    def __init__(self, config:dict, model_name:str, vehicles:list):
+    def __init__(self, config, model_name:str, vehicles:list):
         super().__init__()
+        if isinstance(config, str):
+            config = self.load_config(config)
         self.map = config['rpo_map'] # rpo到拍摄位置的映射
         self.packages = config['packages'] # 车型配置
         self.class2rpo = config['class_to_rpo'] # 英文类别到rpo的映射
@@ -21,6 +24,11 @@ class VehicleDetector:
         self.model_name = model_name # 当前检测的模型
         self.vehicles = vehicles # 检测车辆信息列表
 
+    def load_config(self, path):
+        with open(path, "r") as f:
+            config = json.load(f)
+        return config
+    
     def run(self, model=None):
         print(f'当前检测车型：{self.model_name}')
         if model is None:
@@ -55,7 +63,7 @@ class VehicleDetector:
                     # 解码得到当前拍摄位置的预测类别信息
                     predict_cls = self.decode(componet, result_json)
                     # 对比配置文件和预测信息，获取检测结果
-                    res = self.compare(i, pos_config[i], predict_cls)
+                    res = self.compare(i, pos_config[i], predict_cls, rpos, vehicle.vehicle_package)
                     if res != 'OK':
                         # 添加保存调用图像图像地址
                         result.extend(['NG', res, image_path])
@@ -87,7 +95,8 @@ class VehicleDetector:
                     if "UD5" in predict and "UD5" in acutal:
                         # TODO: 对高配车型的11和14点位进行处理
                         pass
-        
+        if len(acutal) == 0:
+            return 'OK'
         pre = ' '.join(predict)
         acu = ' '.join(acutal)
         if len(predict) != len(acutal):
@@ -122,7 +131,7 @@ class VehicleDetector:
                 },
                 "info": {
                     "component": component,
-                    "camera": camera_id,
+                    "camera": str(camera_id),
                     "vehicleType": vehicle_type
                 }
             }

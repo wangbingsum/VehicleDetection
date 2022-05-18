@@ -23,7 +23,7 @@ def load_image(image_root_dir:str, model_name:str, image_number:int) -> list:
         list: 加载的测试图片
     """
     
-    data = get_vehicle_data(image_root_dir, [model_name], {model_name:image_number})
+    data = get_vehicle_data(image_root_dir, [model_name], {model_name:[image_number]})
     return data[model_name]
     
     
