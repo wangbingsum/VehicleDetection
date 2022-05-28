@@ -19,7 +19,8 @@ class Vehicle(dict):
     def _update(self, images):
         "image: D:\Image\20210723\358\LSGUL8AL3MA247727\4UM167G27OS1\p_9.jpg"
         for image in images:
-            position = int(re.findall(r'_(.+?).jpg', image)[0])
+            position = image.split(".")[0].split("_")[-1]
+            # position = int(re.findall(r'_(.+?).jpg', image)[0])
             self.__setitem__(position, image)
 
     def __len__(self):

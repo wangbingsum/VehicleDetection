@@ -54,7 +54,8 @@ class VehicleDetector:
                 result.append(vehicle.vehicle_package)
                 for i in range(1, len(vehicle) + 1):
                     result.append(f"PIC{i}")
-                    image_path = vehicle[i]
+                    image_path = vehicle[str(i)]
+                    # image_path = vehicle[i]
                     componet = self.componets[str(i)]
                     # 构造调用json文件
                     image_json = self.get_image_json(image_path, componet, i, self.model_name)
