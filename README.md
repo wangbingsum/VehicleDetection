@@ -4,6 +4,9 @@
 2022-05-17
 > 1. 添加适用于单个模型预测的API
 
+2022-05-31
+> 1. 修改NL的配置文件,增加UD0(前保无雷达)的配置
+
 ### 使用方法
 
 1. 安装
@@ -15,7 +18,7 @@ pip install -e .
 2. 使用
 
 ~~~ python
-from vehicle_detection.api import load_image, analyse_result
+from vehicle_detection.api import load_image, analyse_result, save_result
 from vehicle_detection.core.predict import VehicleDetector
 
 # 以358为例
@@ -38,4 +41,7 @@ result = detector.run(predictor)
 
 # 5. 检测结果分析
 analyse_result(result)
+
+# 6. 保存检测结果
+save_result("{save path}", result)
 ~~~
