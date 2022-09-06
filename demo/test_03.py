@@ -71,7 +71,7 @@ if __name__ == "__main__":
         "E59": "E58"
     }
     # decode(file_UL, output_UL, config_UL, remove_lst, map_rpo)
-    file_NB = r"C:\Users\wangb\Desktop\C1UL 23MY Option System20220829.xlsx"
+    file_NB = r"E:\Project\C#2\上海通用项目\配置文件更新\2022-08-30\C1UL 23MY Option System20220829.xlsx"
     output_NB = r"output\NB.json"
     config_NB = r"configs\NB.json"
     remove_lst = ["SHF", "UV3", "#19"]
